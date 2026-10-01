@@ -74,17 +74,19 @@ def create_operators(L):
     
     return sx_operator, sy_operator, sz_operator
 
-def commutator(s1,s2):
-    return np.dot(s1,s2) - np.dot(s2,s1)
-    
+def calculate_commutator(s1,s2,expectation):
+    commutator =  np.dot(s1,s2) - np.dot(s2,s1)
+    return commutator, np.allclose(commutator, expectation)
+
+
+
+
 sx_operator, sy_operator, sz_operator = create_operators(4)  
 
 
-sx1, sy1 = commutator(sx_operator[2],sy_operator[2])
+sx1_sy1 = calculate_commutator(sx_operator[2], sy_operator[2],1j*sz_operator[2])[0]
 
-def check_commutator(commutator, s3):
-    
-    close = np.allclose(commutator, S_i, rtol = 1e-5 , atol = 1e-5)
+print(f"Is the commutator cyclic as expected?")
     
     
 
