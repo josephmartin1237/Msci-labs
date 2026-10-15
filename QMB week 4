@@ -1,0 +1,56 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Oct 15 09:57:06 2026
+
+@author: zv24041
+"""
+import numpy as np
+import scipy 
+ 
+
+def sector_states(L, n_up):
+        
+    all_states = np.arange(2**L)
+    number_of_ones = np.zeros(2**L, dtype = int)
+    for i in range(L):
+        number_of_ones += (all_states >> i) & 1 
+        
+        
+    return all_states[number_of_ones == n_up]
+    
+
+maks = sector_states(4,2) # L C L/2 entries
+maks1 = len(maks)# L C L/2 
+maks5 = np.array([bin(int(i)) for i in maks])
+
+def heisenberg_sector(L, n_up):
+    states = sector_states(L, n_up)
+    D = len(states)
+    diagonal = np.zeros(D)
+    rows, cols = [],[]
+    for i in range(L):
+        j = (i+1) % L 
+        bit_i = (states >> i) & 1
+        bit_j = (states >> j) & 1
+        parralel = bit_i == bit_j
+        diagonal += np.where(parralel, 0.25, -0.25)
+        #anti = 
+    
+    
+    
+    return diagonal
+    
+maks2 = heisenberg_sector(4, 2)
+maks3 = len(maks2)
+
+
+
+def take_square_sub_matrix(matrix, start_row, start_col, size):
+    
+    matrix = np.array(matrix)
+    
+    return matrix[start_row:start_row + size , start_col:start_col + size]
+
+#test_matrix = [1,2,3,4], [5,6,7,8], [9,0,1,2], [3,4,5,6]
+
+#maks4 = take_square_sub_matrix(test_matrix, 1, 2, 2)
