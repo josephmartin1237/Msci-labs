@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.spyproject/
+.ipynb_checkpoints/
+# Large regenerated Hamiltonians (L > 10); rebuild with "python Generators.py"
+Heisenberg chain/operators/h_1[1-9]_*
+Heisenberg chain/operators/h_2[0-9]_*
