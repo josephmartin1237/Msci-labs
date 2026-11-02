@@ -140,14 +140,8 @@ for name, state in trial_states.items():
 #Part 2 perturbing the exact ground state
 perturbation = randomised_state(4)
 epsilons = np.logspace(-5, -1, 25)
-# Only fitting the small-epsilon region where sin(eps) ~ eps
-
 
 energy_differences = np.zeros(len(epsilons))
-small = epsilons < 0.1
-exponent, intercept = np.polyfit(np.log(epsilons[small]), np.log(energy_differences[small]), 1)
-prefactor = np.exp(intercept)
-
 for i in range(len(epsilons)):
  state = perturbed_state(ground_state, perturbation, epsilons[i])
  energy_differences[i] = rayleigh_quotient(state, hamiltonian) - exact_energy
