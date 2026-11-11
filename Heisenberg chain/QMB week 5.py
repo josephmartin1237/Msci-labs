@@ -105,6 +105,9 @@ for L in sizes:
           f"{'Yes!' if triplet else 'No!':>18} {residuals[-1]:>9.1e} {elapsed:>9.2f}")
 gaps = np.array(gaps)
 inverse_L = 1.0/sizes
+# Saved so the report figure can be redrawn without rerunning the diagonalisation
+np.savez("heisenberg_even_L.npz", sizes=sizes, E0=E0_values, E1=E1_values, gaps=gaps,
+         **{f"C_{L}": correlations[L] for L in sizes})
 
 print("\nE0 is a unique singlet for every even L and E1 is the S = 1 triplet (3-fold, Sz = -1, 0, 1),")
 print("so the gap being tracked is the singlet-triplet (spin) gap.")
