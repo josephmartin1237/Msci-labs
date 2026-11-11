@@ -98,8 +98,8 @@ for L, D, d, r, s in zip(sizes, full_dimension, sector_dimension, ratio, stirlin
     build_time.append(perf_counter()-start)
     nnz_sector.append(h_sector.nnz)
     memory_sector.append(sparse_nbytes(h_sector))
-    # Full nnz from the small saved Hamiltonians (Generators.py makes them), the big ones
-    # are skipped since loading them just to count takes GBs
+    # Full nnz read from the saved Hamiltonians in operators/ (made by Generators.py),
+    # only for L up to max_L_full_check
     path = os.path.join(operator_folder, f"h_{L}_sparse.npz")
     small_enough = L <= max_L_full_check and os.path.exists(path)
     nnz_full.append(sparse.load_npz(path).nnz if small_enough else np.nan)

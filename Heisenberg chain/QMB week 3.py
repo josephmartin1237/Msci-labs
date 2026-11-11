@@ -4,7 +4,7 @@ Created on Tue Oct 20 11:35:09 2026
 
 @author: Joe Martin
 """
-# Problem 10: numerical check that [H, Sz_tot] = 0 (analytic proof above).
+# Problem 10: numerical check that [H, Sz_tot] = 0.
 from scipy import sparse
 
 # ---- single-spin operators ----

@@ -34,7 +34,7 @@ def count_degenerate(eigvals, value, tolerance=1e-8):
 
 def zz_correlation(state, L, n_up):
     # C(r) = <S^z_0 S^z_r>, averaged over every starting site j since the ring is
-    # translation invariant (less rounding noise than using site 0 only)
+    # translation invariant, which is the 1/L sum in Eq. (24)
     basis = sector_states_fast(L, n_up)
     probability = np.abs(state)**2
     spins = np.array([((basis >> j) & 1) - 0.5 for j in range(L)])   # S^z_j for every basis state
@@ -60,7 +60,7 @@ def residual(hamiltonian, energy, state):
     return np.linalg.norm(hamiltonian @ state - energy*state)
 
 # Variables
-min_L, max_L = 4, 24     # the problems ask for 4 <= L <= 20, 22 and 24 are cheap with the sector code
+min_L, max_L = 4, 24     # smallest and largest even ring sizes
 data_file = "energy_density.txt"
 bethe_ansatz = 0.25 - np.log(2)
 cloizeaux_pearson = np.pi**2/2   # L*gap -> pi v with spin wave velocity v = pi/2
@@ -129,7 +129,7 @@ slope, intercept = np.polyfit(np.log(sizes[2:]), np.log(gaps[2:]), 1)
 print(f"Log-log fit (L >= {sizes[2]}): gap ~ L^({slope:.3f}), gapless theory gives L^-1")
 
 # Log corrections: L*gap = (pi^2/2)(1 - 1/(2 ln L) + ...), so L*gap is a polynomial in 1/ln L
-# whose intercept is pi v. This tests the gapless prediction quantitatively
+# whose intercept is pi v, compared with pi^2/2 for a gapless chain
 inverse_log = 1.0/np.log(sizes)
 print(f"\n{'window':>9} {'form in 1/ln L':>15} {'L*gap(L->inf)':>14} {'fit error':>10} {'v = intercept/pi':>17}")
 log_fits = {}

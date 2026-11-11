@@ -32,7 +32,7 @@ def residual(hamiltonian, energy, state):
     return np.linalg.norm(hamiltonian @ state - energy*state)
 
 # Variables
-min_L, max_L = 3, 24    # the task asks for 3 to 20, the extra sizes help the fits in task 3
+min_L, max_L = 3, 24    # smallest and largest ring sizes
 data_file = "energy_density.txt"
 
 sizes = []

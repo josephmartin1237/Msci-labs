@@ -87,7 +87,7 @@ trial_states = {"Singlet (ground) state": trial_singlet,
 # Problem 2
 ###############################################################################
  
-# Tensor products of the spin elemets with themselves
+# Tensor products of the spin elements with themselves
 sx_sx = np.kron(sx, sx)
 sy_sy = np.kron(sy, sy)
 sz_sz = np.kron(sz, sz)

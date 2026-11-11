@@ -195,13 +195,13 @@ def hamiltonian_middle_sparse_bit(n_particles):
     return hamiltonian
 
 def sector_states_fast(n_particles, n_up):
-    # Same as sector_states but with numpy, the python loop is too slow past L ~ 24
+    # Same as sector_states but using numpy arrays instead of a python loop
     all_states = np.arange(2**n_particles, dtype=np.int64)
     return all_states[np.bitwise_count(all_states) == n_up]
 
 def hamiltonian_middle_sparse_fast(n_particles, n_up=None):
-    # Same matrix as hamiltonian_middle_sparse_bit but every state is done at once
-    # with numpy arrays, so L = 26 takes seconds instead of hours.
+    # Same matrix as hamiltonian_middle_sparse_bit, built for every state at once
+    # using numpy arrays instead of looping over the states.
     # n_up picks the sector, default is the middle one (Sz = 0 or 1/2)
     if n_up is None:
         n_up = ceil(n_particles/2)
@@ -323,7 +323,7 @@ if __name__ == "__main__":
     end_dense_load = perf_counter()
     print(f"It took {end_dense_load-start_dense_load:.2f}s to load all {max_L_dense-1} dense matrices."+"\n")
 
-    # Sector Hamiltonians, the fast version is used because the lil versions take hours past L ~ 22
+    # Sector Hamiltonians, built with the numpy version hamiltonian_middle_sparse_fast
     start_mid = perf_counter()
     for i in range(2, max_L_mid+1):
         print(f"Generating the Hamiltonian for a {i}-particle system.")
