@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Report figure (Fig. 1): finite-size signatures of criticality in the Heisenberg ring
-(a) energy density intercepts against fit window, (b) scaled gap against 1/ln L,
+(a) energy density against 1/L^2 with fits, (b) scaled gap against 1/ln L,
 (c) staggered correlations against chord distance.
 Reads energy_density.txt (Research task 1) and heisenberg_even_L.npz (QMB week 5),
 so run those first. Drawn at its printed width (7 inches, full page width).
@@ -16,7 +16,6 @@ from matplotlib.ticker import FixedLocator, FormatStrFormatter, NullFormatter
 bethe_ansatz = 0.25 - np.log(2)
 cloizeaux_pearson = np.pi**2/2
 odd_colour, even_colour = "#0072b2", "#d55e00"
-min_points = 4    # same fit windows as Research task 3
 
 plt.rcParams.update({"font.size": 8, "axes.labelsize": 8, "legend.fontsize": 6.5,
                      "xtick.labelsize": 7, "ytick.labelsize": 7, "lines.linewidth": 1,
@@ -30,25 +29,21 @@ sizes, gaps = data["sizes"], data["gaps"]
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(7.0, 2.4), constrained_layout=True)
 
 ###############################################################################
-# (a) Intercept of the 1/L^2 fits against the smallest ring in the window
+# (a) Energy density against 1/L^2, with fits for L >= 8
 ###############################################################################
 
+x_line = np.linspace(0, 1.0/L_all.min()**2, 200)
 for name, parity, colour, marker in [("odd", 1, odd_colour, "o"), ("even", 0, even_colour, "s")]:
     mask = (L_all % 2 == parity)
-    x, y, L_values = 1.0/L_all[mask]**2, density[mask], L_all[mask]
-    for degree, fill, form in [(1, colour, r"$a+b/L^2$"), (2, "white", r"$+\,c/L^4$")]:
-        rows = []
-        for start in range(len(L_values) - min_points - degree + 2):
-            p, cov = np.polyfit(x[start:], y[start:], degree, cov=True)
-            rows.append((L_values[start], p[-1], np.sqrt(cov[-1, -1])))
-        L_min, intercept, error = np.array(rows).T
-        ax1.errorbar(L_min, 1e4*(intercept - bethe_ansatz), 1e4*error, fmt=marker, ms=3.5,
-                     mfc=fill, mec=colour, ecolor=colour, elinewidth=0.8, label=f"{name}, {form}")
-ax1.axhline(0, color="k", ls="--", lw=0.8)
-ax1.set_xlabel(r"Smallest ring in fit, $L_{\min}$")
-ax1.set_ylabel(r"$10^4\,(e_\infty^{\rm fit}-e_\infty^{\rm exact})$")
-ax1.legend(ncol=2, loc="lower right", handletextpad=0.2, columnspacing=0.6)
-ax1.set_ylim(-3.6, 5.5)
+    fit = mask & (L_all >= 8)
+    # a + b/L^2 + c/L^4, the form used for the final estimate in Research task 3
+    p = np.polyfit(1.0/L_all[fit]**2, density[fit], 2)
+    ax1.plot(x_line, np.polyval(p, x_line), color=colour)
+    ax1.plot(1.0/L_all[mask]**2, density[mask], marker, ms=3.5, color=colour, label=f"{name} $L$")
+ax1.axhline(bethe_ansatz, color="k", ls="--", lw=0.8, label=r"$1/4-\ln 2$")
+ax1.set_xlabel(r"$1/L^2$")
+ax1.set_ylabel(r"$E_0/L$")
+ax1.legend(loc="lower left")
 ax1.set_title("(a)", loc="left")
 
 ###############################################################################
@@ -78,7 +73,8 @@ ax2.set_title("(b)", loc="left")
 ###############################################################################
 
 shown = sizes[1::2]    # every other even L keeps the panel readable
-colours = plt.cm.Blues(np.linspace(0.4, 1.0, len(shown)))
+# One distinct colour per ring (Okabe-Ito order, colour-blind safe)
+colours = ["#0072b2", "#e69f00", "#009e73", "#d55e00", "#cc79a7", "#56b4e9"]
 for L, colour in zip(shown, colours):
     r = np.arange(1, L//2 + 1)
     chord = (L/np.pi)*np.sin(np.pi*r/L)
