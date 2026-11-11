@@ -60,7 +60,7 @@ def residual(hamiltonian, energy, state):
     return np.linalg.norm(hamiltonian @ state - energy*state)
 
 # Variables
-min_L, max_L = 4, 24     # smallest and largest even ring sizes
+min_L, max_L = 4, 26     # smallest and largest even ring sizes
 data_file = "energy_density.txt"
 bethe_ansatz = 0.25 - np.log(2)
 cloizeaux_pearson = np.pi**2/2   # L*gap -> pi v with spin wave velocity v = pi/2
@@ -259,7 +259,7 @@ print(f"Correlations: Neel signs everywhere (antiferromagnetic), but |C| decays 
 print("Best supported: the energy density (odd and even bracket the Bethe value) and the antiferromagnetic")
 print("sign pattern. The gap closing is well supported once the log correction is included, but a plain 1/L")
 print("fit only bounds it. Least secure: the correlation exponent, the two L/2 sub-sequences still drift")
-print("and the sqrt(ln r) correction can't be pinned down over r <= 12.")
+print("and the sqrt(ln r) correction can't be pinned down over r <= 13.")
 
 ###############################################################################
 # Report figure (Heisenberg chain: intrinsic gaplessness)
