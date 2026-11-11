@@ -19,17 +19,18 @@ odd_colour, even_colour = "#0072b2", "#d55e00"
 
 grey = "0.45"
 
-plt.rcParams.update({"font.size": 8, "axes.labelsize": 8, "legend.fontsize": 7,
-                     "xtick.labelsize": 7, "ytick.labelsize": 7, "lines.linewidth": 1,
+# Template rules: lettering at least the 10pt main text, symbols at least 2 mm (about 6pt)
+plt.rcParams.update({"font.size": 10, "axes.labelsize": 10, "legend.fontsize": 10,
+                     "xtick.labelsize": 10, "ytick.labelsize": 10, "lines.linewidth": 1.2,
                      "legend.frameon": False, "axes.spines.top": False,
-                     "axes.spines.right": False, "lines.markersize": 3.5})
+                     "axes.spines.right": False, "lines.markersize": 6})
 
 L_all, density = np.loadtxt("energy_density.txt", usecols=(0, 2), unpack=True)
 L_all = L_all.astype(int)
 data = np.load("heisenberg_even_L.npz")
 sizes, gaps = data["sizes"], data["gaps"]
 
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(7.0, 2.3), constrained_layout=True)
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(7.0, 2.6), constrained_layout=True)
 
 ###############################################################################
 # (a) Energy density against 1/L^2, with fits for L >= 8
@@ -70,7 +71,7 @@ ax2.plot(x_curve, L_curve*np.polyval(p_line, 1.0/L_curve), ls="--", color=grey)
 ax2.plot(inverse_log, sizes*gaps, "o", color=odd_colour, mec="white", mew=0.4)
 ax2.plot(0, cloizeaux_pearson, "*", ms=8, color="k", clip_on=False)
 ax2.text(0.03, cloizeaux_pearson, r"$\pi^2/2$", va="center")
-ax2.text(0.0, 4.30, r"fit in $1/\ln L$", ha="left", va="center")
+ax2.text(0.0, 4.05, r"fit in $1/\ln L$", ha="left", va="center")
 ax2.text(0.27, 4.95, r"$\Delta=a+b/L$", color=grey, va="center")
 ax2.set_xlabel(r"$1/\ln L$")
 ax2.set_ylabel(r"$L\Delta$")
