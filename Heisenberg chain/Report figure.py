@@ -30,7 +30,7 @@ L_all = L_all.astype(int)
 data = np.load("heisenberg_even_L.npz")
 sizes, gaps = data["sizes"], data["gaps"]
 
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(7.0, 2.6), constrained_layout=True)
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(7.0, 2.3), constrained_layout=True)
 
 ###############################################################################
 # (a) Energy density against 1/L^2, with fits for L >= 8
